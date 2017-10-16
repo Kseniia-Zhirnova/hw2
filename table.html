@@ -1,13 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<meta charset="utf-8">
+  <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Some table about countries</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
   <body>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script>
 
+      var sortByDescending = true;
+
+      function zebra() {
+        d3.selectAll("tr").style("background-color", function(d, i) {
+            return i % 2 ? "#fff" : "#eee";
+          });
+      }
+
       d3.json("https://raw.githubusercontent.com/avt00/dvcourse/master/countries_2012.json", function(error, data){
         
-        var columns = Object.keys(data[0]);
+        var columns = ["name", "continent", "gdp", "life_expectancy", "population", "year"];
 
         var table = d3.select("body").append("table"),
           thead = table.append("thead")
@@ -23,9 +35,24 @@
           .append("th")
           .text(function(d) { return d; })
           .on("click", function(header, i) {
+            sortByDescending = !sortByDescending;
+            // if (sortByDescending)
+            //   this.innerHTML = d + " down";
+            // else
+            //   this.innerHTML = d + " up";
             tbody.selectAll("tr").sort(function(a, b) {
-              return d3.descending(a[header], b[header]);
+              var result = d3.descending(a[header], b[header]);
+              if (sortByDescending != true)
+              {
+                result = -result;
+              }
+              if (result == 0)
+              {
+                result = -d3.descending(a["name"], b["name"]);
+              }
+              return result;
             });
+            zebra();
           });
 
         var rows = tbody.selectAll("tr.row")
@@ -35,8 +62,8 @@
 
         var cells = rows.selectAll("td")
           .data(function(row) {
-              return d3.range(Object.keys(row).length).map(function(column, i) {
-                  return row[Object.keys(row)[i]];
+              return d3.range(columns.length).map(function(column, i) {
+                  return row[columns[i]];
               });
           })
           .enter()
@@ -48,14 +75,9 @@
               .style("background-color", "#F3ED86");
         
           }).on("mouseout", function() {
-
-            tbody.selectAll("tr")
-              .style("background-color", null)
-              .selectAll("td")
-              .style("background-color", null);
-
+            zebra();
           });
-
+        zebra();
       });
     </script> 
   </body>
