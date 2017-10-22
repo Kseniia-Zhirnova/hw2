@@ -10,6 +10,7 @@
     <script>
 
       var sortByDescending = true;
+      var currentYear = 2000;
 
       function zebra() {
         d3.selectAll("tr").style("background-color", function(d, i) {
@@ -17,8 +18,14 @@
           });
       }
 
-      d3.json("https://raw.githubusercontent.com/avt00/dvcourse/master/countries_2012.json", function(error, data){
+      d3.json("https://raw.githubusercontent.com/avt00/dvcourse/master/countries_1995_2012.json", function(error, data){
         
+        data.forEach(function callback(d, index, array) {
+          d.gdp = d.years[currentYear - 1995].gdp;
+          d.life_expectancy = d.years[currentYear - 1995].life_expectancy;
+          d.population = d.years[currentYear - 1995].population;
+          d.year = d.years[currentYear - 1995].year;
+        })
         var columns = ["name", "continent", "gdp", "life_expectancy", "population", "year"];
 
         var table = d3.select("body").append("table"),
@@ -32,14 +39,18 @@
         thead.append("tr").selectAll("th")
           .data(columns)
         .enter()
-          .append("th")
+          .append("th").style("cursor", "s-resize")
           .text(function(d) { return d; })
           .on("click", function(header, i) {
             sortByDescending = !sortByDescending;
-            // if (sortByDescending)
-            //   this.innerHTML = d + " down";
-            // else
-            //   this.innerHTML = d + " up";
+            if (sortByDescending) {
+              thead.selectAll("th").style("cursor", "s-resize").text(function(d) { return d; });
+              this.innerHTML = columns[i] + " ▼";
+            }
+            else {
+              thead.selectAll("th").style("cursor", "n-resize").text(function(d) { return d; });
+              this.innerHTML = columns[i] + " ▲";
+            }
             tbody.selectAll("tr").sort(function(a, b) {
               var result = d3.descending(a[header], b[header]);
               if (sortByDescending != true)
@@ -68,7 +79,15 @@
           })
           .enter()
           .append("td")
-          .text(function(d) { return d; })
+          .text(function(d, i) {
+            if (columns[i] == "gdp") {
+              return d3.format(",.3s")(d);
+            } else if (columns[i] == "life_expectancy") {
+              return d3.format(".1f")(d);
+            } else if (columns[i] == "population") {
+              return d3.format(",")(d);
+            } else return d;
+          })
           .on("mouseover", function(d, i) {
 
             d3.select(this.parentNode)
@@ -79,6 +98,6 @@
           });
         zebra();
       });
-    </script> 
+    </script>
   </body>
 </html>
