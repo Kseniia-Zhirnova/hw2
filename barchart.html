@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Some table about countries</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+  <body onload="formChart();">
+    <p><a href="table.html">Interactive table is here</a></p>
+    <div id=chart>
+      <p>Time update:
+        <label>1995
+          <input type="range" min="1995" max="2012" step="1" value="1995" oninput="controlsOnChange();">
+          2012
+        </label>
+      </p>
+      <p>Encode bars by:
+        <label>
+          <input type="radio" checked="true" name="chartEncoding" value="population" onchange="controlsOnChange();">
+          Population
+        </label>
+        <label>
+          <input type="radio" name="chartEncoding" value="gdp" onchange="controlsOnChange();">
+          GDP
+        </label>
+      </p>
+      <p>Filter by:
+        <label>
+          <input type="checkbox" value="Africa" onchange="controlsOnChange();"></input>
+          Africa
+        </label>
+        <label>
+          <input type="checkbox" value="Americas" onchange="controlsOnChange();"></input>
+          Americas
+        </label>
+        <label>
+          <input type="checkbox" value="Asia" onchange="controlsOnChange();"></input>
+          Asia
+        </label>
+        <label>
+          <input type="checkbox" value="Europe" onchange="controlsOnChange();"></input>
+          Europe
+        </label>
+        <label>
+          <input type="checkbox" value="Oceania" onchange="controlsOnChange();"></input>
+          Oceania
+        </label>
+      </p>
+      <p>
+        Aggregation:
+        <label>
+          <input type="radio" checked="true" name="aggregation" value="none" onchange="controlsOnChange();">
+          None
+        </label>
+        <label>
+          <input type="radio" name="aggregation" value="by continent" onchange="controlsOnChange();">
+          By continent
+        </label>
+      </p>
+      <p>Sort by:
+        <label>
+          <input type="radio" checked="true" name="sorting" value="name" onchange="controlsOnChange();">
+          Name
+        </label>
+        <label>
+          <input type="radio" name="sorting" value="population" onchange="controlsOnChange();">
+          Population
+        </label>
+        <label>
+          <input type="radio" name="sorting" value="gdp" onchange="controlsOnChange();">
+          GDP
+        </label>
+      </p>
+    </div>
+  </body>
+</html>
