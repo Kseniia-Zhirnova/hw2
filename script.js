@@ -108,7 +108,6 @@ function fillChart() {
       if (!barHolder) barHolder = svg.append('g')
         .classed('bar-holder', true);
       var yPos = 0;
-      console.log("trans0");
       barHolder.selectAll('rect.bar')
         .data(currentData)
       .enter()
