@@ -31,6 +31,7 @@ function controlsOnChange() {
       aggregation = d3.select(this).attr("value");
     }
   });
+  if (oldAggr != aggregation) remove = true;
 
   var selection = d3.selectAll("input[name=sorting]"), oldSorting = sortParameter;
   if (selection) {
